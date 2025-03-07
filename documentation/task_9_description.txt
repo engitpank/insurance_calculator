@@ -1,0 +1,17 @@
+**Контекст задачи (краткое описание) **
+Задать конфигурацию для build.gradle
+
+**Что было сделано и как? (краткое описание)**
+
+Заданы кодировки компиляции для тестовых и продакшен классов: options.encoding = "UTF-8"
+Указана версия поддерживаемого и компилируемого синтаксиса языка: sourceCompatibility & targetCompatibility
+Подключен тестовая платформа JUnit5 - useJUnitPlatform()
+
+Что такое плагины?
+Plugins introduce new tasks (e.g., JavaCompile), domain objects (e.g., SourceSet), conventions (e.g., locating Java source at src/main/java), and extend core or other plugin objects.
+https://docs.gradle.org/current/userguide/plugins.html#sec:using_plugins
+
+**Сколько потратил времени на выполнение задачи?**
+< 20 минут
+
+**Заметки, идеи, предложения в свободной форме**

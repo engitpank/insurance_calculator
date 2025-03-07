@@ -22,6 +22,31 @@ dependencies {
 
 }
 
+java {
+    sourceCompatibility = '21'
+    targetCompatibility = '21'
+}
+
+compileJava {
+    options.encoding = "UTF-8"
+}
+
+compileTestJava {
+    options.encoding = "UTF-8"
+}
+
 test {
     useJUnitPlatform()
+}
+
+
+clean.doFirst {
+    delete "${projectDir}/logs/"
+    println "${projectDir}/logs/"
+
+    delete "${projectDir}/out/"
+    println "${projectDir}/out/"
+
+    delete "${projectDir}/build/"
+    println "${projectDir}/build/"
 }
