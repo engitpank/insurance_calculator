@@ -1,0 +1,31 @@
+**Контекст задачи (краткое описание) **
+Узнать, какие действия выполняет команда build в Gradle.
+
+**Что было сделано и как? (краткое описание)**
+Запущена таска build. Из консоли взят результат исполнения:
+
+> Task :compileJava - Compiles production Java source files using the JDK compiler.
+> Task :processResources - Copies production resources into the production resources directory.
+> Task :classes - This is an aggregate task that just depends on other tasks. Other plugins may attach additional compilation tasks to it.
+> Task :jar - Assembles the production JAR file, based on the classes and resources attached to the main source set.
+> Task :assemble - Aggregate task that assembles all the archives in the project. This task is added by the Base Plugin.
+> Task :compileTestJava - Compiles test Java source files using the JDK compiler.
+> Task :processTestResources NO-SOURCE - Copies test resources into the test resources directory.
+> Task :testClasses UP-TO-DATE - This is an aggregate task that just depends on other tasks. Other plugins may attach additional test compilation tasks to it.
+> Task :test - Runs the unit tests using JUnit or TestNG.
+> Task :check - Aggregate task that performs verification tasks, such as running the tests. You should also attach any custom Test tasks to this lifecycle task if you want them to execute for a full build..
+> Task :build - Aggregate tasks that performs a full build of the project. This task is added by the Base Plugin.
+
+Таски в gradle были сконфигурированы, благодаря подключенному плагину "java":
+https://docs.gradle.org/current/userguide/java_plugin.html
+
+
+**Зачем это было сделано? Чему научился в процессе выполнения задания?**
+Была выполнена начальная настройка проекта. IDEA был выбран в качестве сборщика из-за удобства: меньше лишних записей в логах при исполнении.
+
+**Сколько потратил времени на выполнение задачи?**
+< 30 минут
+
+**Заметки, идеи, предложения в свободной форме**
+IDEA автоматический не подтягивает импорты классов. Залез в настройки в параметры Auto Import, чтобы включить
+автоматическое добавление и удаление зависимостей.
