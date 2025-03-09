@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import ru.itpank.travel.insurance.rest.TravelCalculatePremiumRequest;
 import ru.itpank.travel.insurance.rest.TravelCalculatePremiumResponse;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 class TravelCalculatePremiumServiceImplTest {
@@ -14,13 +16,16 @@ class TravelCalculatePremiumServiceImplTest {
     TravelCalculatePremiumRequest request;
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws ParseException {
         travelCalculatePremiumService = new TravelCalculatePremiumServiceImpl();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date agreementDateFrom = formatter.parse("2025-03-03");
+        Date agreementDateTo = formatter.parse("2025-03-08");
         request = new TravelCalculatePremiumRequest(
                 "Ivan",
                 "Ivanov",
-                new Date(),
-                new Date()
+                agreementDateFrom,
+                agreementDateTo
         );
     }
 
