@@ -34,7 +34,6 @@ public class TravelCalculatePremiumServiceImplAIEachFieldTest {
 
         // Act
         TravelCalculatePremiumResponse response = service.calculatePremium(requestMock);
-        System.out.println(response);
         // Assert
         assertEquals(firstName, response.getPersonFirstName());
     }
