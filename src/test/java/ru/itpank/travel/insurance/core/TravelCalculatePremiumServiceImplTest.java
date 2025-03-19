@@ -3,6 +3,12 @@ package ru.itpank.travel.insurance.core;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ru.itpank.travel.insurance.rest.TravelCalculatePremiumRequest;
 import ru.itpank.travel.insurance.rest.TravelCalculatePremiumResponse;
 
@@ -10,15 +16,19 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+@ExtendWith(SpringExtension.class)
+@SpringBootTest
 class TravelCalculatePremiumServiceImplTest {
+    @Mock
+    private DateTimeService dateTimeService;
 
-    TravelCalculatePremiumService travelCalculatePremiumService;
-    TravelCalculatePremiumRequest request;
+    @InjectMocks
+    private TravelCalculatePremiumServiceImpl travelCalculatePremiumService;
+
+    private TravelCalculatePremiumRequest request;
 
     @BeforeEach
     void setUp() throws ParseException {
-        DateTimeService dateTimeService = new DateTimeService();
-        travelCalculatePremiumService = new TravelCalculatePremiumServiceImpl(dateTimeService);
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date agreementDateFrom = formatter.parse("2025-03-03");
         Date agreementDateTo = formatter.parse("2025-03-08");
@@ -28,6 +38,8 @@ class TravelCalculatePremiumServiceImplTest {
                 agreementDateFrom,
                 agreementDateTo
         );
+        long daysBetween = 5;
+        Mockito.when(dateTimeService.calculateDaysBetween(agreementDateFrom, agreementDateTo)).thenReturn(daysBetween);
     }
 
     @Test
