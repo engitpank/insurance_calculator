@@ -17,7 +17,8 @@ class TravelCalculatePremiumServiceImplTest {
 
     @BeforeEach
     void setUp() throws ParseException {
-        travelCalculatePremiumService = new TravelCalculatePremiumServiceImpl();
+        DateTimeService dateTimeService = new DateTimeService();
+        travelCalculatePremiumService = new TravelCalculatePremiumServiceImpl(dateTimeService);
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         Date agreementDateFrom = formatter.parse("2025-03-03");
         Date agreementDateTo = formatter.parse("2025-03-08");
