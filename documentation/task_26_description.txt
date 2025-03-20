@@ -1,0 +1,21 @@
+**Контекст задачи (краткое описание) **
+Добавить в проект Lombok:
+
+	compileOnly('org.projectlombok:lombok:1.18.32')
+	annotationProcessor('org.projectlombok:lombok:1.18.32')
+
+	testCompileOnly('org.projectlombok:lombok:1.18.32')
+	testAnnotationProcessor('org.projectlombok:lombok:1.18.32')
+
+В IntelliJIdea File -> Settings -> "Enable annotation processing"
+поставить галочку.
+
+Применить Lombok для генерации get/set методов и конструкторов для классов запроса и ответа.
+
+**Что было сделано и как? (краткое описание)**
+Добавлены зависимости в проект.
+В TravelCalculatePremiumRequest и TravelCalculatePremiumResponse заменены явно указанные конструкторы и get\set на аннотации:
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
