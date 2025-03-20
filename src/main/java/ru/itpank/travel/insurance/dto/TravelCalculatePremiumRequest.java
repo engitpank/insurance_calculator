@@ -1,4 +1,4 @@
-package ru.itpank.travel.insurance.rest;
+package ru.itpank.travel.insurance.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +11,7 @@ import java.util.Date;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class TravelCalculatePremiumRequest {
+public class TravelCalculatePremiumRequest extends CoreResponse {
 
     private String personFirstName;
     private String personLastName;

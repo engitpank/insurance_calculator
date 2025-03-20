@@ -9,18 +9,24 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import ru.itpank.travel.insurance.rest.TravelCalculatePremiumRequest;
-import ru.itpank.travel.insurance.rest.TravelCalculatePremiumResponse;
+import ru.itpank.travel.insurance.dto.TravelCalculatePremiumRequest;
+import ru.itpank.travel.insurance.dto.TravelCalculatePremiumResponse;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+
+import static org.mockito.ArgumentMatchers.any;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 class TravelCalculatePremiumServiceImplTest {
     @Mock
     private DateTimeService dateTimeService;
+
+    @Mock
+    private TravelCalculatePremiumRequestValidator requestValidator;
 
     @InjectMocks
     private TravelCalculatePremiumServiceImpl travelCalculatePremiumService;
@@ -40,6 +46,7 @@ class TravelCalculatePremiumServiceImplTest {
         );
         long daysBetween = 5;
         Mockito.when(dateTimeService.calculateDaysBetween(agreementDateFrom, agreementDateTo)).thenReturn(daysBetween);
+        Mockito.when(requestValidator.validate(any())).thenReturn(List.of());
     }
 
     @Test
