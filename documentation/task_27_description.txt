@@ -1,0 +1,11 @@
+**Контекст задачи (краткое описание) **
+Применить Lombok для генерации конструктора без модификатора доступа для классов:
+- TravelCalculatePremiumServiceImpl
+- TravelCalculatePremiumController
+
+
+**Что было сделано и как? (краткое описание)**
+В классы была добавлена аннотация
+@RequiredArgsConstructor(access = AccessLevel.PACKAGE)
+
+Перезапустил проект и проверил, что в папке out/production/classes конструктор объявлен без модификатора доступа.
