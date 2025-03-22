@@ -7,3 +7,5 @@ buildResponse -> underwriteAndBuildResponse
 buildResponse -> buildErrorResponse
 
 Создал метод, в котором на основе данных запроса будет рассчитываться стоимость полиса - underwrite.
+
+UPD: Вынес в отдельный класс логику расчёта страховых выплат. Класс получился соответствующим принципу Single Responsibility.
