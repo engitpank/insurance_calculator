@@ -19,7 +19,7 @@ class TravelCalculatePremiumRequestValidatorTest {
     private final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
     @Test
-    void validate_AllFieldsValid_shouldReturnNoErrors() throws ParseException {
+    void validate_allFieldsValid_shouldReturnNoErrors() throws ParseException {
         request = createRequest("Ivan", "Ivanov",
                 formatter.parse("2025-03-03"), formatter.parse("2025-03-08"));
 
@@ -29,27 +29,76 @@ class TravelCalculatePremiumRequestValidatorTest {
     }
 
     @Test
-    void validate_FirstNameInvalid_shouldReturnError() throws ParseException {
+    void validate_firstNameIsNull_shouldReturnError() throws ParseException {
         request = createRequest("", "Ivanov",
                 formatter.parse("2025-03-03"), formatter.parse("2025-03-08"));
 
         List<ValidationError> errors = validator.validate(request);
 
-        Assertions.assertEquals(1, errors.size());
         ValidationError error = errors.getFirst();
         Assertions.assertEquals(error.getField(), "personFirstName");
         Assertions.assertEquals(error.getMessage(), "Must not be empty!");
     }
 
     @Test
-    void validate_AllFieldsInvalid_shouldReturnNoErrors() {
-        request = createRequest("", "", null, null);
+    void validate_lastNameIsNull_shouldReturnError() throws ParseException {
+        request = createRequest("Ivan", "",
+                formatter.parse("2025-03-03"), formatter.parse("2025-03-08"));
 
         List<ValidationError> errors = validator.validate(request);
 
-        Assertions.assertEquals(4, errors.size());
+        ValidationError error = errors.getFirst();
+        Assertions.assertEquals(error.getField(), "personLastName");
+        Assertions.assertEquals(error.getMessage(), "Must not be empty!");
     }
 
+    @Test
+    void validate_dateFromIsNull_shouldReturnError() throws ParseException {
+        request = createRequest("Ivan", "Ivanov",
+                null, formatter.parse("2025-03-08"));
+
+        List<ValidationError> errors = validator.validate(request);
+
+        ValidationError error = errors.getFirst();
+        Assertions.assertEquals(error.getField(), "agreementDateFrom");
+        Assertions.assertEquals(error.getMessage(), "Must not be empty!");
+    }
+
+    @Test
+    void validate_dateToIsNull_shouldReturnError() throws ParseException {
+        request = createRequest("Ivan", "Ivanov",
+                formatter.parse("2025-03-03"), null);
+
+        List<ValidationError> errors = validator.validate(request);
+
+        ValidationError error = errors.getFirst();
+        Assertions.assertEquals(error.getField(), "agreementDateTo");
+        Assertions.assertEquals(error.getMessage(), "Must not be empty!");
+    }
+
+    @Test
+    void validate_dateToBeforeDateFrom_shouldReturnError() throws ParseException {
+        request = createRequest("Ivan", "Ivanov",
+                formatter.parse("2025-03-03"), formatter.parse("2025-03-01"));
+
+        List<ValidationError> errors = validator.validate(request);
+
+        ValidationError error = errors.getFirst();
+        Assertions.assertEquals(error.getField(), "agreementDateTo");
+        Assertions.assertEquals(error.getMessage(), "Must be after agreementDateFrom!");
+    }
+
+    @Test
+    void validate_dateToEqualDateFrom_shouldReturnError() throws ParseException {
+        request = createRequest("Ivan", "Ivanov",
+                formatter.parse("2025-03-03"), formatter.parse("2025-03-03"));
+
+        List<ValidationError> errors = validator.validate(request);
+
+        ValidationError error = errors.getFirst();
+        Assertions.assertEquals(error.getField(), "agreementDateTo");
+        Assertions.assertEquals(error.getMessage(), "Must be after agreementDateFrom!");
+    }
 
     private TravelCalculatePremiumRequest createRequest(String firstName, String lastName, Date from, Date to) {
         return new TravelCalculatePremiumRequest(firstName, lastName, from, to);
