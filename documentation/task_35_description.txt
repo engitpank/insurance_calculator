@@ -1,0 +1,23 @@
+**Контекст задачи (краткое описание) **
+Улучшить код в классе TravelCalculatePremiumServiceImpl, провести рефакторинг
+если это возможно. Цель рефакторинга - улучшить читабельность
+кода и подготовить его к будущим изменениям.
+
+Надо реализовать это бизнес правило.
+
+**Что было сделано и как? (краткое описание)**
+Пометил комментариями смысловые блоки: Валидация \ Возврат неуспешного ответа \ Подсчёт формулы \ Возврат успешного ответа.
+
+Расписал возможные сценарии:
+- Неуспешная валидация -> возврат ошибки;
+- Успешная валидация -> подсчёт страхового полиса и возврат ответа;
+
+Так как сценарий зависит от результата валидации, вынес каждый из связанных блоков кода в отдельный метод.
+Сверился с итоговым решением. Оказалось также, поизаимствовал названия функций.
+
+** Материалы **:
+Martin Fowler, Kent Beck, Refactoring: Improving the Design of Existing Code:
+First edition: https://www.amazon.com/Refactoring-Improving-Design-Existing-Code/dp/0201485672
+Second edition: https://www.amazon.com/Refactoring-Improving-Existing-Addison-Wesley-Signature/dp/0134757599
+На тему clean code классикой является The Clean Coder (by Robert C. Martin):
+https://www.amazon.com/Robert-Martinand-Professional-Programmers-Paperback/dp/B07VK8VZ9B
