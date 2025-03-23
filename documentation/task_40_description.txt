@@ -1,0 +1,3 @@
+**Контекст задачи (краткое описание) **
+Отправить корректный и невалидный API запрос через Postman.
+По компьютерным сетям хороший курс - https://www.youtube.com/playlist?list=PLtPJ9lKvJ4oiNMvYbOzCmWy6cRzYAh9B1
