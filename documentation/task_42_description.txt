@@ -1,0 +1,7 @@
+**Контекст задачи (краткое описание) **
+В TravelCalculatePremiumRequest поменять формат выдачи даты на "yyyy-MM-dd".
+
+**Что было сделано и как? (краткое описание)**
+В TravelCalculatePremiumRequest для дат была добавлена аннотация:
+    @JsonFormat(pattern = "yyyy-MM-dd", lenient = OptBoolean.FALSE)
+    lenient, чтобы Jenkins отбраковывал невалидные форматы yyyy-MM-dd
