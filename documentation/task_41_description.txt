@@ -1,0 +1,12 @@
+**Контекст задачи (краткое описание) **
+В Response поменять формат выдачи даты на "yyyy-MM-dd".
+
+**Что было сделано и как? (краткое описание)**
+Отдельно импортировать jackson в проект не стал, так как он уже включен в Spring Boot:
+implementation('com.fasterxml.jackson.core:jackson-core:2.14.2')
+
+В TravelCalculatePremiumResponse для Date добавлены аннотации @JsonFormat(pattern = "yyyy-MM-dd")
+
+Интересные параметры JsonFormat:
+with позволяет включить определенные атрибуты форматирования, а without исключить.
+lenient - позволяет поднять строгость парсинга значений при десериализации.
