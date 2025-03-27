@@ -1,0 +1,158 @@
+**Контекст задачи (краткое описание) **
+Написать тест-кейсы для тестирования контроллера.
+
+**Что было сделано и как? (краткое описание)**
+Предполагаю создать класс для unit-тестов:
+1. При переданных валидных данных должен быть возвращен объект Response, содержащий переданные поля и agreementPrice.
+2. При переданных валидных данных поле errors не должно быть возвращено.
+3. При некорретных данных должно быть возвращено только поле errors, содержащее массив ошибок.
+4. При некорректных данных должно быть возвращено массив errors, содержащий поля field и message.
+5. Запрос должен быть отклонён, если формат даты не соответствует шаблону "yyyy-MM-dd".
+6. Контроллер должен вернуть Response, содержащий дату в формате "yyyy-MM-dd".
+
+И отдельно класс для интеграционных тестов:
+
+1) Дано: firstName не указан.
+Request:
+{
+  "personFirstName" : null,
+  "personLastName" : "Pupkin",
+  "agreementDateFrom" : "2021-05-25",
+  "agreementDateTo" : "2021-05-29"
+}
+Ожидаем: в ответе ошибка firstName не указан.
+Response:
+{
+  "errors": [
+    {
+      "field": "personFirstName",
+      "message": "Must not be empty!"
+    }
+  ]
+}
+
+2) Дано: lastName не указан.
+Request:
+{
+  "personFirstName" : "Valisily",
+  "personLastName" : null,
+  "agreementDateFrom" : "2021-05-25",
+  "agreementDateTo" : "2021-05-29"
+}
+Ожидаем: в ответе ошибка lastName не указан.
+Response:
+{
+  "errors": [
+    {
+      "field": "personFirstName",
+      "message": "Must not be empty!"
+    }
+  ]
+}
+
+3) Дано: agreementDateFrom не указан.
+   Ожидаем: в ответе ошибка agreementDateFrom не указан.
+Request:
+{
+  "personFirstName" : "Valisily",
+  "personLastName" : "Pupkin",
+  "agreementDateFrom" : null,
+  "agreementDateTo" : "2021-05-29"
+}
+Ожидаем: в ответе ошибка agreementDateFrom не указан.
+Response:
+{
+  "errors": [
+    {
+      "field": "agreementDateFrom",
+      "message": "Must not be empty!"
+    }
+  ]
+}
+
+4) Дано: agreementDateTo не указан.
+   Ожидаем: в ответе ошибка agreementDateTo не указан.
+Request:
+{
+  "personFirstName" : "Valisily",
+  "personLastName" : "Pupkin",
+  "agreementDateFrom" : "2021-05-25",
+  "agreementDateTo" : null
+}
+Ожидаем: в ответе ошибка agreementDateTo не указан.
+Response:
+{
+  "errors": [
+    {
+      "field": "agreementDateFrom",
+      "message": "Must not be empty!"
+    }
+  ]
+}
+5) Дано: allFields не указаны.
+   Ожидаем: в ответе ошибки для каждого поля.
+Request:
+{
+  "personFirstName" : null,
+  "personLastName" : null,
+  "agreementDateFrom" : null,
+  "agreementDateTo" : null
+}
+Ожидаем: в ответе ошибки для каждого поля.
+Response:
+{
+  "errors": [
+    {
+      "field": "personFirstName",
+      "message": "Must not be empty!"
+    },
+    {
+        "field": "personLastName",
+        "message": "Must not be empty!"
+    },
+    {
+        "field": "agreementDateFrom",
+        "message": "Must not be empty!"
+    },
+    {
+        "field": "agreementDateTo",
+        "message": "Must not be empty!"
+    }
+  ]
+}
+6) Дано: agreementDateTo < agreementDateFrom.
+   Ожидаем: в ответе ошибка agreementDateTo < agreementDateFrom.
+Request:
+{
+  "personFirstName" : "Valisily",
+  "personLastName" : "Pupkin",
+  "agreementDateFrom" : "2021-05-25",
+  "agreementDateTo" : "2021-05-25"
+}
+Ожидаем: в ответе ошибка agreementDateTo < agreementDateFrom.
+Response:
+{
+  "errors": [
+    {
+      "field": "agreementDateTo",
+      "message": "Must be after agreementDateFrom!"
+    }
+  ]
+}
+7) Дано: указаны все поля.
+   Ожидаем: ответ без ошибок.
+Request:
+{
+  "personFirstName" : "Valisily",
+  "personLastName" : "Pupkin",
+  "agreementDateFrom" : "2021-05-25",
+  "agreementDateTo" : "2021-05-25"
+}
+Response:
+{
+  "personFirstName" : "Valisily",
+  "personLastName" : "Pupkin",
+  "agreementDateFrom" : "2021-05-25",
+  "agreementDateTo" : "2021-05-29"
+  "agreementPrice": 4
+}
