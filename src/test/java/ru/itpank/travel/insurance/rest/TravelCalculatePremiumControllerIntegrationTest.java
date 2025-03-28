@@ -1,6 +1,5 @@
 package ru.itpank.travel.insurance.rest;
 
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +9,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import ru.itpank.travel.insurance.JsonFileReader;
 
-import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
@@ -24,141 +23,71 @@ class TravelCalculatePremiumControllerIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @Autowired
+    private JsonFileReader jsonFileReader;
+
     @Test
     public void calculatePremium_allFieldsValid_shouldReturnNoErrors() throws Exception {
-        mockMvc.perform(post("/insurance/travel/")
-                        .content("""
-                                {\
-                                "personFirstName" : "Vasja",
-                                "personLastName" : "Pupkin",
-                                "agreementDateFrom" : "2021-05-25",
-                                "agreementDateTo" : "2021-05-29"
-                                }""")
-                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("personFirstName", is("Vasja")))
-                .andExpect(jsonPath("personLastName", is("Pupkin")))
-                .andExpect(jsonPath("agreementDateFrom", is("2021-05-25")))
-                .andExpect(jsonPath("agreementDateTo", is("2021-05-29")))
-                .andExpect(jsonPath("agreementPrice", is(4)))
-                .andReturn();
+        String requestJson = jsonFileReader.readJsonFromFile("rest/TravelCalculatePremiumRequest_success.json");
+        String responseJson = jsonFileReader.readJsonFromFile("rest/TravelCalculatePremiumResponse_success.json");
+        sendRequestAndCompare(requestJson, responseJson);
     }
 
     @Test
     public void calculatePremium_firstNameNull_shouldReturnNoErrors() throws Exception {
-        mockMvc.perform(post("/insurance/travel/")
-                        .content("""
-                                {\
-                                "personFirstName" : null,
-                                "personLastName" : "Pupkin",
-                                "agreementDateFrom" : "2021-05-25",
-                                "agreementDateTo" : "2021-05-29"
-                                }""")
-                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("errors[0].field", is("personFirstName")))
-                .andExpect(jsonPath("errors[0].message", is("Must not be empty!")))
-                .andReturn();
+        String requestJson = jsonFileReader.readJsonFromFile("rest/TravelCalculatePremiumRequest_personFirstName_null.json");
+        String responseJson = jsonFileReader.readJsonFromFile("rest/TravelCalculatePremiumResponse_personFirstName_null.json");
+        sendRequestAndCompare(requestJson, responseJson);
     }
 
     @Test
     public void calculatePremium_lastNameNull_shouldReturnNoErrors() throws Exception {
-        mockMvc.perform(post("/insurance/travel/")
-                        .content("""
-                                {\
-                                "personFirstName" : "Vasja",
-                                "personLastName" : null,
-                                "agreementDateFrom" : "2021-05-25",
-                                "agreementDateTo" : "2021-05-29"
-                                }""")
-                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("errors[0].field", is("personLastName")))
-                .andExpect(jsonPath("errors[0].message", is("Must not be empty!")))
-                .andReturn();
+        String requestJson = jsonFileReader.readJsonFromFile("rest/TravelCalculatePremiumRequest_personLastName_null.json");
+        String responseJson = jsonFileReader.readJsonFromFile("rest/TravelCalculatePremiumResponse_personLastName_null.json");
+        sendRequestAndCompare(requestJson, responseJson);
     }
 
     @Test
     public void calculatePremium_agreementDateFromNull_shouldReturnNoErrors() throws Exception {
-        mockMvc.perform(post("/insurance/travel/")
-                        .content("""
-                                {\
-                                "personFirstName" : "Vasja",
-                                "personLastName" : "Pupkin",
-                                "agreementDateFrom" : null,
-                                "agreementDateTo" : "2021-05-29"
-                                }""")
-                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("errors[0].field", is("agreementDateFrom")))
-                .andExpect(jsonPath("errors[0].message", is("Must not be empty!")))
-                .andReturn();
+        String requestJson = jsonFileReader.readJsonFromFile("rest/TravelCalculatePremiumRequest_agreementDateFrom_null.json");
+        String responseJson = jsonFileReader.readJsonFromFile("rest/TravelCalculatePremiumResponse_agreementDateFrom_null.json");
+        sendRequestAndCompare(requestJson, responseJson);
     }
 
     @Test
     public void calculatePremium_agreementDateToNull_shouldReturnNoErrors() throws Exception {
-        mockMvc.perform(post("/insurance/travel/")
-                        .content("""
-                                {\
-                                "personFirstName" : "Vasja",
-                                "personLastName" : "Pupkin",
-                                "agreementDateFrom" : "2021-05-25",
-                                "agreementDateTo" : null
-                                }""")
-                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("errors[0].field", is("agreementDateTo")))
-                .andExpect(jsonPath("errors[0].message", is("Must not be empty!")))
-                .andReturn();
+        String requestJson = jsonFileReader.readJsonFromFile("rest/TravelCalculatePremiumRequest_agreementDateTo_null.json");
+        String responseJson = jsonFileReader.readJsonFromFile("rest/TravelCalculatePremiumResponse_agreementDateTo_null.json");
+        sendRequestAndCompare(requestJson, responseJson);
     }
 
     @Test
     public void calculatePremium_allFieldsNull_shouldReturnErrorsByEachField() throws Exception {
-        String[] fields = {"personFirstName", "personLastName",
-                "agreementDateFrom", "agreementDateTo"};
-        mockMvc.perform(post("/insurance/travel/")
-                        .content("""
-                                {\
-                                "personFirstName" : null,
-                                "personLastName" : null,
-                                "agreementDateFrom" : null,
-                                "agreementDateTo" : null
-                                }""")
-                        .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("errors", Matchers.hasSize(4)))
-                .andExpect(jsonPath("errors[*].field", contains(fields)))
-                .andExpect(jsonPath("errors[*].message", everyItem(is("Must not be empty!"))))
-                .andReturn();
+        String requestJson = jsonFileReader.readJsonFromFile("rest/TravelCalculatePremiumRequest_allFields_null.json");
+        String responseJson = jsonFileReader.readJsonFromFile("rest/TravelCalculatePremiumResponse_allFields_null.json");
+        sendRequestAndCompare(requestJson, responseJson);
     }
 
     @Test
     public void validate_dateToBeforeDateFrom_shouldReturnError() throws Exception {
+        String requestJson = jsonFileReader.readJsonFromFile("rest/TravelCalculatePremiumRequest_agreementDateToBeforeDateFrom_null.json");
+        String responseJson = jsonFileReader.readJsonFromFile("rest/TravelCalculatePremiumResponse_agreementDateToBeforeDateFrom_null.json");
+        sendRequestAndCompare(requestJson, responseJson);
+    }
+
+    private void sendRequestAndCompare(String requestJson, String responseJson) throws Exception {
         mockMvc.perform(post("/insurance/travel/")
-                        .content("""
-                                {\
-                                "personFirstName" : "Vasja",
-                                "personLastName" : "Pupkin",
-                                "agreementDateFrom" : "2021-05-25",
-                                "agreementDateTo" : "2021-05-25"
-                                }""")
+                        .content(requestJson)
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("errors[0].field", is("agreementDateTo")))
-                .andExpect(jsonPath("errors[0].message", is("Must be after agreementDateFrom!")))
+                .andExpect(content().json(responseJson))
                 .andReturn();
     }
 
     @Test
     public void validate_invalidFormatAgreementDateFrom_shouldReturnBadRequest() throws Exception {
         mockMvc.perform(post("/insurance/travel/")
-                        .content("""
-                                {\
-                                "personFirstName" : "Vasja",
-                                "personLastName" : "Pupkin",
-                                "agreementDateFrom" : "2021-99-99",
-                                "agreementDateTo" : "2021-05-25"
-                                }""")
+                        .content(jsonFileReader.readJsonFromFile("rest/TravelCalculatePremiumRequest_agreementDateFrom_invalidFormat.json"))
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isBadRequest())
                 .andReturn();
@@ -167,13 +96,7 @@ class TravelCalculatePremiumControllerIntegrationTest {
     @Test
     public void validate_invalidFormatAgreementDateTo_shouldReturnBadRequest() throws Exception {
         mockMvc.perform(post("/insurance/travel/")
-                        .content("""
-                                {\
-                                "personFirstName" : "Vasja",
-                                "personLastName" : "Pupkin",
-                                "agreementDateFrom" : "2021-05-25",
-                                "agreementDateTo" : "05-01-2025"
-                                }""")
+                        .content(jsonFileReader.readJsonFromFile("rest/TravelCalculatePremiumRequest_agreementDateTo_invalidFormat.json"))
                         .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(status().isBadRequest())
                 .andReturn();
