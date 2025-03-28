@@ -4,10 +4,7 @@ import org.springframework.stereotype.Component;
 import ru.itpank.travel.insurance.dto.TravelCalculatePremiumRequest;
 import ru.itpank.travel.insurance.dto.ValidationError;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Component
 class TravelCalculatePremiumRequestValidator {
@@ -23,6 +20,8 @@ class TravelCalculatePremiumRequestValidator {
         validateAgreementDateFrom(request).ifPresent(errors::add);
         validateAgreementDateTo(request).ifPresent(errors::add);
         validateAgreementPeriod(request).ifPresent(errors::add);
+        agreementDateFromMustBeInPresent(request).ifPresent(errors::add);
+        agreementDateToMustBeInPresent(request).ifPresent(errors::add);
         return errors;
     }
 
@@ -61,4 +60,29 @@ class TravelCalculatePremiumRequestValidator {
                 : Optional.empty();
     }
 
+    private Optional<ValidationError> agreementDateFromMustBeInPresent(TravelCalculatePremiumRequest request) {
+        Date dateFrom = request.getAgreementDateFrom();
+        Date present = getPresentDate();
+        return (dateFrom != null && (dateFrom.before(present) && !dateFrom.equals(present)))
+                ? Optional.of(new ValidationError("agreementDateFrom", "The agreement date must not be in the past!"))
+                : Optional.empty();
+    }
+
+    private Optional<ValidationError> agreementDateToMustBeInPresent(TravelCalculatePremiumRequest request) {
+        Date dateFrom = request.getAgreementDateTo();
+        Date present = getPresentDate();
+        return (dateFrom != null && (dateFrom.before(present) && !dateFrom.equals(present)))
+                ? Optional.of(new ValidationError("agreementDateTo", "The agreement date must not be in the past!"))
+                : Optional.empty();
+    }
+
+    private Date getPresentDate() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar.getTime();
+    }
 }
