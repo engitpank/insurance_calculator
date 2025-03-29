@@ -75,6 +75,13 @@ class TravelCalculatePremiumControllerIntegrationTest {
         sendRequestAndCompare(requestJson, responseJson);
     }
 
+    @Test
+    public void validate_allFieldsNull_shouldReturnError() throws Exception {
+        String requestJson = jsonFileReader.readJsonFromFile("rest/TravelCalculatePremiumRequest_allFields_null.json");
+        String responseJson = jsonFileReader.readJsonFromFile("rest/TravelCalculatePremiumResponse_allFields_null.json");
+        sendRequestAndCompare(requestJson, responseJson);
+    }
+
     private void sendRequestAndCompare(String requestJson, String responseJson) throws Exception {
         mockMvc.perform(post("/insurance/travel/")
                         .content(requestJson)
