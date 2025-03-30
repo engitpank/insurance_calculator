@@ -14,13 +14,10 @@ import java.text.SimpleDateFormat;
 
 @ExtendWith(MockitoExtension.class)
 class TravelPremiumUnderwritingTest {
-
     @Mock
     DateTimeService dateTimeService;
-
     @InjectMocks
     TravelPremiumUnderwriting travelPremiumUnderwriting;
-
     TravelCalculatePremiumRequest request;
 
     @BeforeEach

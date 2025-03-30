@@ -19,10 +19,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 class TravelCalculatePremiumControllerIntegrationTest {
-
     @Autowired
     private MockMvc mockMvc;
-
     @Autowired
     private JsonFileReader jsonFileReader;
 

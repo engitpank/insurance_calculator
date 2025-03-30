@@ -30,19 +30,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(TravelCalculatePremiumController.class)
 class TravelCalculatePremiumControllerTest {
-
     @Autowired
     private MockMvc mockMvc;
-
     @MockBean
     TravelCalculatePremiumService calculatorService;
-
-    private TravelCalculatePremiumRequest request;
-    private TravelCalculatePremiumResponse validResponse;
-    private TravelCalculatePremiumResponse invalidResponse;
-
     @Autowired
     ObjectMapper objectMapper;
+    private TravelCalculatePremiumRequest request;
+    private TravelCalculatePremiumResponse validResponse;
 
     @BeforeEach
     void setUp() throws ParseException {
@@ -65,7 +60,6 @@ class TravelCalculatePremiumControllerTest {
     @Test
     void calculatePremium_validRequest_responseShouldHasNoErrors() throws Exception {
         Mockito.when(calculatorService.calculatePremium(any())).thenReturn(validResponse);
-
         mockMvc.perform(post("/insurance/travel/")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
@@ -77,7 +71,6 @@ class TravelCalculatePremiumControllerTest {
     @Test
     void calculatePremium_validRequest_responseShouldContainsAllRequestFields() throws Exception {
         Mockito.when(calculatorService.calculatePremium(any())).thenReturn(validResponse);
-
         mockMvc.perform(post("/insurance/travel/")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
@@ -92,7 +85,6 @@ class TravelCalculatePremiumControllerTest {
     @Test
     void calculatePremium_validRequest_responseShouldContainsAgreementPrice() throws Exception {
         Mockito.when(calculatorService.calculatePremium(any())).thenReturn(validResponse);
-
         mockMvc.perform(post("/insurance/travel/")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
@@ -103,9 +95,8 @@ class TravelCalculatePremiumControllerTest {
 
     @Test
     void calculatePremium_inValidRequest_responseShouldContainsAgreementPrice() throws Exception {
-        invalidResponse = new TravelCalculatePremiumResponse(List.of(new ValidationError("field", "message")));
+        TravelCalculatePremiumResponse invalidResponse = new TravelCalculatePremiumResponse(List.of(new ValidationError("field", "message")));
         Mockito.when(calculatorService.calculatePremium(any())).thenReturn(invalidResponse);
-
         mockMvc.perform(post("/insurance/travel/")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))

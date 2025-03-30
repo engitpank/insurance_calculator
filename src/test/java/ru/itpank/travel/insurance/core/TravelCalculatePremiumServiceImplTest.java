@@ -24,16 +24,12 @@ import static org.mockito.ArgumentMatchers.any;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 class TravelCalculatePremiumServiceImplTest {
-
     @Mock
     private TravelCalculatePremiumRequestValidator requestValidator;
-
     @Mock
     private TravelPremiumUnderwriting premiumUnderwriting;
-
     @InjectMocks
     private TravelCalculatePremiumServiceImpl travelCalculatePremiumService;
-
     private TravelCalculatePremiumRequest request;
 
     @BeforeEach
@@ -50,36 +46,28 @@ class TravelCalculatePremiumServiceImplTest {
     @Test
     public void calculatePremium_ValidFirstNameInRequest_ReturnsResponseWithCopiedFirstName() {
         String expectedFirstName = request.getPersonFirstName();
-
         TravelCalculatePremiumResponse actualResponse = travelCalculatePremiumService.calculatePremium(request);
-
         Assertions.assertEquals(expectedFirstName, actualResponse.getPersonFirstName());
     }
 
     @Test
     public void calculatePremium_ValidLastNameInRequest_ReturnsResponseWithCopiedFirstName() {
         String expectedLastName = request.getPersonLastName();
-
         TravelCalculatePremiumResponse actualResponse = travelCalculatePremiumService.calculatePremium(request);
-
         Assertions.assertEquals(expectedLastName, actualResponse.getPersonLastName());
     }
 
     @Test
     public void calculatePremium_ValidAgreementDateFromInRequest_ReturnsResponseWithAgreementDateFrom() {
         Date expectedAgreementDateFrom = request.getAgreementDateFrom();
-
         TravelCalculatePremiumResponse actualResponse = travelCalculatePremiumService.calculatePremium(request);
-
         Assertions.assertEquals(expectedAgreementDateFrom, actualResponse.getAgreementDateFrom());
     }
 
     @Test
     public void calculatePremium_ValidAgreementDateToInRequest_ReturnsResponseWithAgreementDateTo() {
         Date expectedAgreementDateTo = request.getAgreementDateTo();
-
         TravelCalculatePremiumResponse actualResponse = travelCalculatePremiumService.calculatePremium(request);
-
         Assertions.assertEquals(expectedAgreementDateTo, actualResponse.getAgreementDateTo());
     }
 
@@ -98,9 +86,7 @@ class TravelCalculatePremiumServiceImplTest {
     @Test
     public void calculatePremium_InValidRequest_PremiumUnderwritingMustNotBeInvoke() {
         Mockito.when(requestValidator.validate(any())).thenReturn(List.of(new ValidationError()));
-
         travelCalculatePremiumService.calculatePremium(request);
-
         Mockito.verify(premiumUnderwriting, Mockito.never()).calculatePremium(request);
     }
 }
