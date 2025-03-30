@@ -14,11 +14,9 @@ import java.util.List;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CoreResponse {
-
     private List<ValidationError> errors;
 
     public boolean hasErrors() {
         return errors != null && !errors.isEmpty();
     }
-
 }

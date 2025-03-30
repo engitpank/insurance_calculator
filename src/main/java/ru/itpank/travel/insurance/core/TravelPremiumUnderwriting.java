@@ -10,7 +10,6 @@ import java.math.BigDecimal;
 @Component
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 class TravelPremiumUnderwriting {
-
     private final DateTimeService dateTimeService;
 
     BigDecimal calculatePremium(TravelCalculatePremiumRequest request){

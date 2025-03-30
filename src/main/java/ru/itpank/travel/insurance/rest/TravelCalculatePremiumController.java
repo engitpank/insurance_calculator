@@ -11,7 +11,6 @@ import ru.itpank.travel.insurance.dto.TravelCalculatePremiumResponse;
 @RestController
 @RequestMapping("/insurance/travel")
 public class TravelCalculatePremiumController {
-
     private final TravelCalculatePremiumService calculatePremiumService;
 
     TravelCalculatePremiumController(TravelCalculatePremiumService calculatePremiumService) {
@@ -24,5 +23,4 @@ public class TravelCalculatePremiumController {
     public TravelCalculatePremiumResponse calculatePremium(@RequestBody TravelCalculatePremiumRequest request) {
         return calculatePremiumService.calculatePremium(request);
     }
-
 }
