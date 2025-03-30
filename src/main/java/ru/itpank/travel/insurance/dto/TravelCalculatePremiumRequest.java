@@ -14,12 +14,10 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TravelCalculatePremiumRequest extends CoreResponse {
-
     private String personFirstName;
     private String personLastName;
     @JsonFormat(pattern = "yyyy-MM-dd", lenient = OptBoolean.FALSE)
     private Date agreementDateFrom;
     @JsonFormat(pattern = "yyyy-MM-dd", lenient = OptBoolean.FALSE)
     private Date agreementDateTo;
-
 }
