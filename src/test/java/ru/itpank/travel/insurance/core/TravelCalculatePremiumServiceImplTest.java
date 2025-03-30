@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import ru.itpank.travel.insurance.core.validation.TravelCalculatePremiumRequestValidator;
 import ru.itpank.travel.insurance.dto.TravelCalculatePremiumRequest;
 import ru.itpank.travel.insurance.dto.TravelCalculatePremiumResponse;
 import ru.itpank.travel.insurance.dto.ValidationError;
@@ -102,5 +103,4 @@ class TravelCalculatePremiumServiceImplTest {
 
         Mockito.verify(premiumUnderwriting, Mockito.never()).calculatePremium(request);
     }
-
 }

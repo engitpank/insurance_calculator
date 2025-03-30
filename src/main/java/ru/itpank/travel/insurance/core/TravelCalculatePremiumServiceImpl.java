@@ -3,6 +3,7 @@ package ru.itpank.travel.insurance.core;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import ru.itpank.travel.insurance.core.validation.TravelCalculatePremiumRequestValidator;
 import ru.itpank.travel.insurance.dto.TravelCalculatePremiumRequest;
 import ru.itpank.travel.insurance.dto.TravelCalculatePremiumResponse;
 import ru.itpank.travel.insurance.dto.ValidationError;
@@ -13,7 +14,6 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 class TravelCalculatePremiumServiceImpl implements TravelCalculatePremiumService {
-
     private final TravelCalculatePremiumRequestValidator requestValidator;
     private final TravelPremiumUnderwriting premiumUnderwriting;
 
@@ -33,5 +33,4 @@ class TravelCalculatePremiumServiceImpl implements TravelCalculatePremiumService
         return new TravelCalculatePremiumResponse(request.getPersonFirstName(), request.getPersonLastName(),
                 request.getAgreementDateFrom(), request.getAgreementDateTo(), agreementPrice);
     }
-
 }
